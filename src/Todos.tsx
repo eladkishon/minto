@@ -1,11 +1,11 @@
-import { Button, Checkbox } from "@nextui-org/react";
+import { Checkbox } from "@nextui-org/react";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
-import { atom, createStore, useAtom, useAtomValue } from "jotai";
-import { useState, useRef, useEffect } from "react";
+import { atom, useAtom } from "jotai";
+import { useState } from "react";
 import { db } from "./firebase";
 import { IoRemove } from "react-icons/io5";
-import { todo } from "node:test";
 import { store } from "./store";
+import debounce from 'lodash/debounce';
 
 interface Todo {
     text: string
@@ -17,15 +17,18 @@ const todosRef = doc(db, "todos", "1");
 const todosAtom = atom<Todo[]>([
 ])
 
+const saveTodos = debounce(async () => {
+    await setDoc(todosRef, { todos: store.get(todosAtom) }, { merge: true });
+}, 300)
+
 store.sub(todosAtom, async () => {
     console.log('Atom state changed to:', store.get(todosAtom));
-    await setDoc(todosRef, { todos: store.get(todosAtom) }, { merge: true });
-
+    saveTodos()
 });
 
 onSnapshot(todosRef, (doc) => {
     if (doc.exists()) {
-      
+
         console.log("update from firebase ", doc.data())
         store.set(todosAtom, doc.data().todos)
     }
@@ -63,7 +66,7 @@ export const Todos = () => {
         store.set(todosAtom, updatedTodos)
     };
 
-   
+
 
     return (
         <div className='flex flex-col gap-4'>
