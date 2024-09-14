@@ -4,7 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { NextUIProvider } from '@nextui-org/react'
 import './firebase'
-import { createStore, Provider } from 'jotai'
+import { Provider } from 'jotai'
 import { store } from './store.ts'
 
 

@@ -36,7 +36,7 @@ onSnapshot(todosRef, (doc) => {
 
 
 export const Todos = () => {
-    const [todos, setTodos] = useAtom(todosAtom)
+    const [todos] = useAtom(todosAtom)
     const [newTodo, setNewTodo] = useState('');
 
     const handleAddTodo = () => {

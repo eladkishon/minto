@@ -4,7 +4,9 @@ import { store } from "./store";
 const AUTH_TOKEN = "BQCa10-25NRCD6ZV9wCeFKV2QPa_0_qHZxUuD958A04tJbE8aGj8DUc9c3fYt7ZREpc7mKCXVHfvPQwc4Q_DIibuOFWFwD3x-NUwgfQ4_yUKwltl3JanrkAayre4R1JL58WTlPeKnwtAS7Dui8RcajBEJwr3efFCANZ6mgFLX2uM0P5az7sk-_IrEGMnoku2MjD8WxP6PlCjcPGkNhQ";
 
 
-export const spotifyAtom = atom({ deviceId: null, isPlaying: false , player: null})
+
+
+export const spotifyAtom = atom<{deviceId?: string, isPlaying: boolean, player?: Spotify.Player}>({ isPlaying: false})
 
 
 
@@ -12,7 +14,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   const token = AUTH_TOKEN
   const player = new Spotify.Player({
     name: 'Web Playback SDK Quick Start Player',
-    getOAuthToken: cb => { cb(token); },
+    getOAuthToken: (cb: any) => { cb(token); },
     volume: 0.5
   });
 
@@ -32,7 +34,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
 
   });
 
-  player.addListener('player_state_changed', (state) => {
+  player.addListener('player_state_changed', (state: any) => {
     if (!state) {
       return;
     }

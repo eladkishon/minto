@@ -13,6 +13,9 @@ export const MusicSwitch = () => {
         color="success"
         isSelected={spotify.isPlaying}
         onValueChange={async (val) => {
+            if (!spotify.player ) {
+                return 
+            }
             console.log('settings player ', val, spotify)
             if (val) {
                 await spotify.player.resume()

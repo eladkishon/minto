@@ -1,5 +1,5 @@
 import './App.css'
-import { Button, Card, CardBody, Switch } from '@nextui-org/react'
+import { Card, CardBody } from '@nextui-org/react'
 import { Todos } from './Todos'
 import { MusicSwitch } from './components/MusicSwitch';
 
