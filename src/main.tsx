@@ -4,13 +4,19 @@ import App from './App.tsx'
 import './index.css'
 import { NextUIProvider } from '@nextui-org/react'
 import './firebase'
+import { createStore, Provider } from 'jotai'
+import { store } from './store.ts'
+
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <NextUIProvider>
-      <main className="text-foreground">
-        <App />
-      </main>
+      <Provider store={store}>
+        <main className="text-foreground h-screen">
+          <App />
+        </main>
+      </Provider >
     </NextUIProvider>
   </StrictMode>,
 )
