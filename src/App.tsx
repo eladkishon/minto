@@ -43,7 +43,7 @@ function App() {
 
 
       <Card className='w-full h-2/3'>
-        <CardBody className='px-10 justify-center flex flex-col gap-4'>
+        <CardBody className='px-2 md:px-10 justify-center flex flex-col gap-4'>
           {PHASES[phase] == PHASE_TODO && <>
             <p className='text-2xl font-extrabold text-center'>Things I achieved today</p>
             <Todos />
