@@ -12,7 +12,7 @@ function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <div className="flex flex-col my-2 md:my-0 md:justify-center items-center h-full gap-4  w-full md:w-1/3 mx-auto px-4">
+    <div className="flex flex-col my-2 md:my-0 md:justify-center items-center h-full gap-4  w-full md:w-2/3 mx-auto px-4">
       <Settings isOpen={isOpen} onOpenChange={onOpenChange} />
       <div className='flex w-full'>
         <div className='w-full flex justify-end'>
@@ -27,11 +27,15 @@ function App() {
 
       </div>
 
-      <Card className='w-full'>
-        <CardBody className='p-10'>
+      <Card className='w-full h-1/3'>
+        <CardBody className='px-10 justify-center flex flex-col gap-4'>
+          <p className='text-2xl font-extrabold text-center'>Things I achieved today</p>
           <Todos />
         </CardBody>
       </Card>
+
+
+
     </div>
 
 

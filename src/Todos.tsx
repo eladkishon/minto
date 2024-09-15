@@ -3,9 +3,9 @@ import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { atom, useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 import { db } from "./firebase";
-import { IoRemove } from "react-icons/io5";
 import { store } from "./store";
 import debounce from 'lodash/debounce';
+import { AiOutlineDelete } from "react-icons/ai";
 
 interface Todo {
     text: string
@@ -60,6 +60,9 @@ export const Todos = () => {
     }
 
     const handleToggleCheckbox = (index: number) => {
+        if (!todos[index].text) {
+            return
+        }
         const updatedTodos = todos.map((todo, i) =>
             i === index ? { ...todo, done: !todo.done } : todo
         );
@@ -73,7 +76,7 @@ export const Todos = () => {
         store.set(todosAtom, updatedTodos)
     };
 
-    useEffect(()=> {
+    useEffect(() => {
         todoTextInputRefs.current[0]?.focus()
     }, [])
 
@@ -85,41 +88,43 @@ export const Todos = () => {
             <div className='flex flex-col gap-2'>
                 {todos.map((todo, index) => (
                     <div className="flex items-center" key={index}>
-                        <Checkbox
-                            isSelected={todo.done}
-                            onChange={() => handleToggleCheckbox(index)}
-                        >
+                        <span className="text-xl font-extrabold w-1/6 text-center"> {index + 1}. </span>
+                        <div className="flex gap-1">
+                            <Checkbox
+                                isSelected={todo.done}
+                                onChange={() => handleToggleCheckbox(index)}
+                                >
 
-                        </Checkbox>
-                        <input
-                            ref={(el) => (todoTextInputRefs.current[index] = el)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleAddTodo()
-                                if (e.key === 'Backspace') handleDeleteTodo(index)
+                            </Checkbox>
+                            <input
+                                style={{ textDecoration: todo.done? 'line-through':''}}
+                                ref={(el) => (todoTextInputRefs.current[index] = el)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') handleAddTodo()
+                                    if (e.key === 'Backspace') !todo.text && handleDeleteTodo(index)
 
-                            }}
-                            placeholder={!todo.text? index < exampleTodos.length? exampleTodos[index]: 'I want to accomplish...' :''}
-                            value={todo.text}
-                            onChange={(e) => handleEditTodo(index, e.target.value)}
-                            autoFocus
-                        />
-                        {
-                            todo.done && <button onClick={() => handleDeleteTodo(index)}>
-                                <IoRemove />
-                            </button>
-                        }
+                                }}
+                                placeholder={!todo.text ? index < exampleTodos.length ? exampleTodos[index] : 'I want to accomplish...' : ''}
+                                value={todo.text}
+                                onChange={(e) => handleEditTodo(index, e.target.value)}
+                                autoFocus
+                            />
+                            {
+                                todo.done && todos.length > 3 && <button onClick={() => handleDeleteTodo(index)}>
+                                    <AiOutlineDelete />
+                                </button>
+                            }
+
+
+
+                        </div>
 
 
 
                     </div>
                 ))}
             </div>
-            {/* <input
-                placeholder="Add a task"
-                value={newTodo}
-                onChange={(e) => setNewTodo(e.target.value)}
-                onBlur={handleAddTodo}
-            /> */}
+
         </div>
     );
 };
