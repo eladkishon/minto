@@ -1,6 +1,5 @@
-import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem } from "@nextui-org/react"
 import { useAtomValue } from "jotai";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaRegBell } from "react-icons/fa6";
 import { bellAtom, BellsConfig } from "./Settings";
 

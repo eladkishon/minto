@@ -3,9 +3,7 @@ import { Card, CardBody, useDisclosure } from '@nextui-org/react'
 import { Todos } from './Todos'
 import { MusicSwitch } from './components/MusicSwitch';
 import { PiGearFineBold } from "react-icons/pi";
-import { bellAtom, Settings } from './components/Settings';
-import { FaRegBell } from "react-icons/fa6";
-import { useAtomValue } from 'jotai';
+import { Settings } from './components/Settings';
 import { Bell } from './components/Bell';
 
 

@@ -1,4 +1,4 @@
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
+import { Modal, ModalContent, ModalHeader, ModalBody, Button,  Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react"
 import { atom, useAtom } from "jotai";
 import { useState, useMemo, useEffect } from "react";
 import { FaRegBell } from "react-icons/fa6";
@@ -49,7 +49,7 @@ const Bell = () => {
             disallowEmptySelection
             selectionMode="single"
             selectedKeys={selectedKeys}
-            onSelectionChange={setSelectedKeys}
+            onSelectionChange={setSelectedKeys as any}
         >
                 {
                     Object.keys(BellsConfig).map((key) => {
@@ -69,7 +69,7 @@ export const Settings = ({ isOpen, onOpenChange }) => {
         onOpenChange={onOpenChange}
     >
         <ModalContent>
-            {(onClose) => (
+            {(_) => (
                 <>
                     <ModalHeader className="flex flex-col gap-1"></ModalHeader>
                     <ModalBody>
