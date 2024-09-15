@@ -1,15 +1,28 @@
 import './App.css'
-import { Card, CardBody, useDisclosure } from '@nextui-org/react'
-import { Todos } from './Todos'
+import { Button, Card, CardBody, CardFooter, useDisclosure } from '@nextui-org/react'
 import { MusicSwitch } from './components/MusicSwitch';
-import { PiGearFineBold } from "react-icons/pi";
+import { PiChartBarDuotone, PiGearFineBold } from "react-icons/pi";
 import { Settings } from './components/Settings';
 import { Bell } from './components/Bell';
+import { useState } from 'react';
+import { Gratitudes } from './components/Gratitude';
+import { Todos } from './components/Todos';
 
+const PHASE_GRATITUDE = 'gratitude'
+const PHASE_TODO = 'todo'
+
+
+const PHASES = [PHASE_GRATITUDE, PHASE_TODO]
 
 
 function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const [phase, setPhase] = useState(0)
+
+  function changePhage(newPhase): void {
+    setPhase(newPhase)
+  }
 
   return (
     <div className="flex flex-col my-2 md:my-0 md:justify-center items-center h-full gap-4  w-full md:w-2/3 mx-auto px-4">
@@ -27,11 +40,30 @@ function App() {
 
       </div>
 
+
+
       <Card className='w-full h-1/3'>
         <CardBody className='px-10 justify-center flex flex-col gap-4'>
-          <p className='text-2xl font-extrabold text-center'>Things I achieved today</p>
-          <Todos />
+          {PHASES[phase] == PHASE_TODO && <>
+            <p className='text-2xl font-extrabold text-center'>Things I achieved today</p>
+            <Todos />
+          </>}
+
+          {PHASES[phase] == PHASE_GRATITUDE && <>
+            <p className='text-2xl font-extrabold text-center'>What are you thankful for?</p>
+
+            <Gratitudes />
+          </>}
+
         </CardBody>
+        <CardFooter className='flex w-full' >
+          <div className='flex w-full '>
+            { phase > 0 && <Button variant='light' onClick={()=>changePhage(phase-1)}>Back</Button>}
+          </div>
+          <div className='flex justify-end w-full'>
+            {phase < PHASES.length-1 && <Button variant='light' onClick={()=>changePhage(phase+1)}>Done</Button>}
+          </div>
+        </CardFooter>
       </Card>
 
 
