@@ -41,7 +41,7 @@ onSnapshot(todosRef, (doc) => {
 
 export const Todos = () => {
     const [todos] = useAtom(todosAtom)
-    const todoTextInputRefs = useRef<(HTMLInputElement | null)[]>([]); // Create an array of refs
+    const todoTextInputRefs = useRef<(HTMLTextAreaElement | null)[]>([]); // Create an array of refs
 
     const handleAddTodo = () => {
         store.set(todosAtom, () => [...todos, { text: '', done: false }])
@@ -74,6 +74,11 @@ export const Todos = () => {
             i === index ? { ...todo, text: val } : todo
         );
         store.set(todosAtom, updatedTodos)
+
+        if (todoTextInputRefs.current[index]) {
+            todoTextInputRefs.current[index].style.height = 'auto';
+            todoTextInputRefs.current[index].style.height = `${todoTextInputRefs.current[index].scrollHeight}px`;
+        }
     };
 
     useEffect(() => {
@@ -81,23 +86,23 @@ export const Todos = () => {
     }, [])
 
 
-
     return (
         <div className='flex flex-col gap-4'>
-            {/* {JSON.stringify(todos)} */}
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2 overflow-hidden w-full'>
                 {todos.map((todo, index) => (
-                    <div className="flex items-center" key={index}>
+                    <div className="flex items-center w-full" key={index}>
                         <span className="text-xl font-extrabold w-1/6 text-center"> {index + 1}. </span>
-                        <div className="flex gap-1">
+                        <div className="flex gap-1 w-full">
                             <Checkbox
                                 isSelected={todo.done}
                                 onChange={() => handleToggleCheckbox(index)}
-                                >
+                            >
 
                             </Checkbox>
-                            <input
-                                style={{ textDecoration: todo.done? 'line-through':''}}
+                            <textarea
+                                className="resize-none  w-full"
+                                rows={1}
+                                style={{ textDecoration: todo.done ? 'line-through' : '', height: 'auto' }}
                                 ref={(el) => (todoTextInputRefs.current[index] = el)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') handleAddTodo()

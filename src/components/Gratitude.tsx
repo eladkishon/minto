@@ -38,7 +38,7 @@ onSnapshot(gratsRef, (doc) => {
 
 export const Gratitudes = () => {
     const [grats] = useAtom(gratitudes)
-    const todoTextInputRefs = useRef<(HTMLInputElement | null)[]>([]); // Create an array of refs
+    const gratsTextInputRefs = useRef<(HTMLTextAreaElement | null)[]>([]); // Create an array of refs
 
     const handleAddGrat = () => {
         store.set(gratitudes, () => [...grats, { text: '', done: false }])
@@ -48,11 +48,11 @@ export const Gratitudes = () => {
         if (grats.length > 3) {
             const updatedGrats = [...grats]
             updatedGrats.splice(index, 1)
-            todoTextInputRefs.current.splice(index, 1)
+            gratsTextInputRefs.current.splice(index, 1)
             store.set(gratitudes, updatedGrats)
         }
 
-        todoTextInputRefs.current[todoTextInputRefs.current.length - 1]?.focus()
+        gratsTextInputRefs.current[gratsTextInputRefs.current.length - 1]?.focus()
     }
 
 
@@ -61,10 +61,15 @@ export const Gratitudes = () => {
             i === index ? { ...todo, text: val } : todo
         );
         store.set(gratitudes, updatedGrats)
+
+        if (gratsTextInputRefs.current[index]) {
+            gratsTextInputRefs.current[index].style.height = 'auto';
+            gratsTextInputRefs.current[index].style.height = `${gratsTextInputRefs.current[index].scrollHeight}px`;
+        }
     };
 
     useEffect(() => {
-        todoTextInputRefs.current[0]?.focus()
+        gratsTextInputRefs.current[0]?.focus()
     }, [])
 
 
@@ -75,9 +80,11 @@ export const Gratitudes = () => {
                 {grats.map((todo, index) => (
                     <div className="flex items-center" key={index}>
                         <span className="text-xl font-extrabold w-1/6 text-center"> {index + 1}. </span>
-                        <div className="flex gap-1">
-                            <input
-                                ref={(el) => (todoTextInputRefs.current[index] = el)}
+                        <div className="flex gap-1 w-full">
+                            <textarea
+                                rows={1}
+                                className="resize-none w-full"
+                                ref={(el) => (gratsTextInputRefs.current[index] = el)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter') handleAddGrat()
                                     if (e.key === 'Backspace') !todo.text && handleDeleteTodo(index)
