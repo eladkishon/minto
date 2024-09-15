@@ -8,9 +8,6 @@ import { Bell } from './components/Bell';
 
 
 
-
-
-
 function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 

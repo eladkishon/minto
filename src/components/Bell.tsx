@@ -1,18 +1,24 @@
 import { useAtomValue } from "jotai";
 import { useState, useEffect } from "react";
-import { FaRegBell } from "react-icons/fa6";
+import { FaBell, FaRegBell } from "react-icons/fa6";
 import { bellAtom, BellsConfig } from "./Settings";
 
 export const Bell = () => {
   const bell = useAtomValue(bellAtom)
-  const [audio, setAudio] = useState(new Audio( BellsConfig[bell].path));
+  const [audio, setAudio] = useState(new Audio(BellsConfig[bell].path));
 
 
 
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    setAudio(new Audio(BellsConfig[bell].path))
+    const audio = new Audio(BellsConfig[bell].path)
+    audio.addEventListener('ended', function () {
+      this.currentTime = 0;
+      this.play();
+    })
+    setAudio(audio)
+
   }, [bell])
 
   const togglePlay = () => {
@@ -25,7 +31,9 @@ export const Bell = () => {
   };
 
   return (
-      <button onClick={togglePlay}><FaRegBell size={25} /></button>
+    <button onClick={togglePlay}>
+      {isPlaying ? <FaBell size={25}/> : <FaRegBell size={25} />}
+      </button>
   );
 };
 
