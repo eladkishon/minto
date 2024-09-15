@@ -1,7 +1,7 @@
 import { Checkbox } from "@nextui-org/react";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { atom, useAtom } from "jotai";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import { db } from "./firebase";
 import { IoRemove } from "react-icons/io5";
 import { store } from "./store";
@@ -12,9 +12,14 @@ interface Todo {
     done: boolean
 }
 
+const exampleTodos = ['Make up the bed', 'Keep learning economics', 'Practice guitar']
+
 const todosRef = doc(db, "todos", "1");
 
 const todosAtom = atom<Todo[]>([
+    { text: '', done: false },
+    { text: '', done: false },
+    { text: '', done: false },
 ])
 
 const saveTodos = debounce(async () => {
@@ -27,8 +32,7 @@ store.sub(todosAtom, async () => {
 });
 
 onSnapshot(todosRef, (doc) => {
-    if (doc.exists()) {
-
+    if (doc.exists() && doc.data().todos.length) {
         console.log("update from firebase ", doc.data())
         store.set(todosAtom, doc.data().todos)
     }
@@ -37,19 +41,22 @@ onSnapshot(todosRef, (doc) => {
 
 export const Todos = () => {
     const [todos] = useAtom(todosAtom)
-    const [newTodo, setNewTodo] = useState('');
+    const todoTextInputRefs = useRef<(HTMLInputElement | null)[]>([]); // Create an array of refs
 
     const handleAddTodo = () => {
-        if (newTodo.trim()) {
-            store.set(todosAtom, () => [...todos, { text: newTodo, done: false }])
-            setNewTodo('');
-        }
+        store.set(todosAtom, () => [...todos, { text: '', done: false }])
     };
 
     const handleDeleteTodo = (index: number) => {
-        const updatedTodos = [...todos]
-        updatedTodos.splice(index, 1)
-        store.set(todosAtom, updatedTodos)
+        if (todos.length > 3) {
+            const updatedTodos = [...todos]
+            updatedTodos.splice(index, 1)
+            todoTextInputRefs.current.splice(index, 1)
+            store.set(todosAtom, updatedTodos)
+            console.log(todoTextInputRefs)
+        }
+
+        todoTextInputRefs.current[todoTextInputRefs.current.length - 1]?.focus()
     }
 
     const handleToggleCheckbox = (index: number) => {
@@ -66,6 +73,10 @@ export const Todos = () => {
         store.set(todosAtom, updatedTodos)
     };
 
+    useEffect(()=> {
+        todoTextInputRefs.current[0]?.focus()
+    }, [])
+
 
 
     return (
@@ -81,6 +92,13 @@ export const Todos = () => {
 
                         </Checkbox>
                         <input
+                            ref={(el) => (todoTextInputRefs.current[index] = el)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleAddTodo()
+                                if (e.key === 'Backspace') handleDeleteTodo(index)
+
+                            }}
+                            placeholder={!todo.text? index < exampleTodos.length? exampleTodos[index]: 'I want to accomplish...' :''}
                             value={todo.text}
                             onChange={(e) => handleEditTodo(index, e.target.value)}
                             autoFocus
@@ -96,12 +114,12 @@ export const Todos = () => {
                     </div>
                 ))}
             </div>
-            <input
+            {/* <input
                 placeholder="Add a task"
                 value={newTodo}
                 onChange={(e) => setNewTodo(e.target.value)}
                 onBlur={handleAddTodo}
-            />
+            /> */}
         </div>
     );
 };
