@@ -1,13 +1,13 @@
-import { useAtomValue } from "jotai";
+import {  useAtomValue } from "jotai";
 import { useState, useEffect } from "react";
 import { FaBell, FaRegBell } from "react-icons/fa6";
 import { bellAtom, BellsConfig } from "./Settings";
 
+
+
 export const Bell = () => {
   const bell = useAtomValue(bellAtom)
   const [audio, setAudio] = useState(new Audio(BellsConfig[bell].path));
-
-
 
   const [isPlaying, setIsPlaying] = useState(false);
 

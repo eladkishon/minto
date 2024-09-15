@@ -86,9 +86,9 @@ export const Todos = () => {
                             autoFocus
                         />
                         {
-                            todo.done && <a href="javascript:void(0)" onClick={() => handleDeleteTodo(index)}>
+                            todo.done && <button onClick={() => handleDeleteTodo(index)}>
                                 <IoRemove />
-                            </a>
+                            </button>
                         }
 
 
