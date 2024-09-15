@@ -12,7 +12,7 @@ function App() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <div className="flex flex-col justify-center items-center h-full gap-4  w-full md:w-1/3 mx-auto px-4">
+    <div className="flex flex-col my-2 md:my-0 md:justify-center items-center h-full gap-4  w-full md:w-1/3 mx-auto px-4">
       <Settings isOpen={isOpen} onOpenChange={onOpenChange} />
       <div className='flex w-full'>
         <div className='w-full flex justify-end'>
