@@ -1,7 +1,7 @@
 import './App.css'
 import { Button, Card, CardBody, CardFooter, useDisclosure } from '@nextui-org/react'
 import { MusicSwitch } from './components/MusicSwitch';
-import { PiChartBarDuotone, PiGearFineBold } from "react-icons/pi";
+import { PiGearFineBold } from "react-icons/pi";
 import { Settings } from './components/Settings';
 import { Bell } from './components/Bell';
 import { useState } from 'react';

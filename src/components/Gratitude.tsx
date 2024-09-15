@@ -1,11 +1,9 @@
-import { Checkbox } from "@nextui-org/react";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { atom, useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 import { db } from "../firebase";
 import { store } from "../store";
 import debounce from 'lodash/debounce';
-import { AiOutlineDelete } from "react-icons/ai";
 
 interface Gratitude {
     text: string
