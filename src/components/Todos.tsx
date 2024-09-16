@@ -82,7 +82,13 @@ export const Todos = () => {
     };
 
     useEffect(() => {
-        todoTextInputRefs.current[0]?.focus()
+        todoTextInputRefs.current.map((todoTextInput => {
+            if (todoTextInput) {
+                todoTextInput.style.height = 'auto'
+                todoTextInput.style.height = `${todoTextInput.scrollHeight}px`
+            }
+        }
+        ))
     }, [])
 
 

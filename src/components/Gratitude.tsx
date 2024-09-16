@@ -69,8 +69,14 @@ export const Gratitudes = () => {
     };
 
     useEffect(() => {
-        gratsTextInputRefs.current[0]?.focus()
-    }, [])
+            gratsTextInputRefs.current.map((gratTextInputRef => {
+                if (gratTextInputRef) {
+                    gratTextInputRef.style.height = 'auto'
+                    gratTextInputRef.style.height = `${gratTextInputRef.scrollHeight}px`
+                }
+            }
+            ))
+    }, [grats])
 
 
 
