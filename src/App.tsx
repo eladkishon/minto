@@ -1,5 +1,5 @@
 import './App.css'
-import { Button, Card, CardBody, CardFooter, useDisclosure } from '@nextui-org/react'
+import { Button, Card, CardBody, CardFooter, CardHeader, useDisclosure } from '@nextui-org/react'
 import { MusicSwitch } from './components/MusicSwitch';
 import { PiGearFineBold } from "react-icons/pi";
 import { Settings } from './components/Settings';
@@ -43,25 +43,34 @@ function App() {
 
 
       <Card className='w-full h-2/3'>
-        <CardBody className='px-2 md:px-10 justify-center flex flex-col gap-4'>
-          {PHASES[phase] == PHASE_TODO && <>
-            <p className='text-2xl font-extrabold text-center'>Things I achieved today</p>
+
+
+        {PHASES[phase] == PHASE_TODO && <>
+          <CardHeader className='p-6'>
+            <p className='text-3xl font-extrabold'>Accomplishments Today</p>
+          </CardHeader>
+          <CardBody className='px-2 md:px-10  flex flex-col gap-4'>
             <Todos />
-          </>}
+          </CardBody>
+        </>}
 
-          {PHASES[phase] == PHASE_GRATITUDE && <>
-            <p className='text-2xl font-extrabold text-center'>What are you thankful for?</p>
+        {PHASES[phase] == PHASE_GRATITUDE && <>
+          <CardHeader className='p-6'>
+            <p className='text-3xl font-extrabold'>Gratitude</p>
+          </CardHeader>
 
+          <CardBody className='px-2 md:px-10 flex flex-col gap-4'>
             <Gratitudes />
-          </>}
+          </CardBody>
 
-        </CardBody>
+        </>}
+
         <CardFooter className='flex w-full' >
           <div className='flex w-full '>
-            { phase > 0 && <Button variant='light' onClick={()=>changePhage(phase-1)}>Back</Button>}
+            {phase > 0 && <Button variant='light' onClick={() => changePhage(phase - 1)}>Back</Button>}
           </div>
           <div className='flex justify-end w-full'>
-            {phase < PHASES.length-1 && <Button variant='light' onClick={()=>changePhage(phase+1)}>Done</Button>}
+            {phase < PHASES.length - 1 && <Button variant='light' onClick={() => changePhage(phase + 1)}>Done</Button>}
           </div>
         </CardFooter>
       </Card>
